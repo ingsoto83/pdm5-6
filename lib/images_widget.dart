@@ -23,11 +23,18 @@ class ImagesWidget extends StatelessWidget {
             width: 400,
             margin: EdgeInsets.all(25),
             decoration: BoxDecoration(
-              //borderRadius: BorderRadius.circular(radius)
+              border: Border.all(
+                color: Colors.black54,
+                width: 20
+              ),
+              borderRadius: BorderRadius.circular(30),
               image: DecorationImage(
                 image: AssetImage('assets/img/imagen1.jpg'),
                 fit: BoxFit.cover
               )
+            ),
+            child: Center(
+              child: Text("Fight!!!", style: TextStyle(fontFamily: 'Signatra', fontSize: 80, color: Colors.amberAccent),),
             ),
           )
         ],
