@@ -9,6 +9,7 @@ class PlaceWidget extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     Widget imageSection = Image.asset('assets/img/place.jpg', width: width, height: height * .30, fit: BoxFit.cover,);
+    Widget imageSectionL = Image.asset('assets/img/place.jpg', width: width * .45, height: height, fit: BoxFit.cover,);
     Widget titleSection = Container(
       padding: EdgeInsets.all(32),
       child: Row(
@@ -43,15 +44,36 @@ class PlaceWidget extends StatelessWidget {
     );
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            imageSection,
-            titleSection,
-            buttonsSection,
-            descriptionSection
-          ],
-        ),
+      body: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          return orientation == Orientation.portrait ?
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                imageSection,
+                titleSection,
+                buttonsSection,
+                descriptionSection
+              ],
+            ),
+          ):
+          Row(
+            children: [
+              imageSectionL,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      titleSection,
+                      buttonsSection,
+                      descriptionSection
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
+        }
       ),
     );
   }
