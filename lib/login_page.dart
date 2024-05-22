@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +13,8 @@ class _LoginPageState extends State<LoginPage> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
   bool visible = false;
+  String user ='';
+  String pass= '';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -64,6 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                         child: TextFormField(
+                          validator: (value)=> value!.isEmpty ? 'Escribe tu correo...!' : null,
+                          onSaved: (value)=> user = value??'',
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.email),
                             labelText: "Usuario",
@@ -84,6 +89,16 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                         child: TextFormField(
+                          validator: (value){
+                            if(value!.isEmpty){
+                              return 'Escribe tu contraseña...!';
+                            }else if(value.length < 6){
+                              return 'Debe ser mínimo de 6 caracteres..!';
+                            }else{
+                              return null;
+                            }
+                          },
+                          onSaved: (value)=> pass = value??'',
                           obscureText: visible ? false : true ,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.password),
@@ -111,6 +126,47 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                        height: 100,
+                        child: ElevatedButton(
+                          onPressed: (){
+                            var form = _formkey.currentState;
+                            if(form!.validate()){
+                              form.save();
+                              login();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80)
+                              ),
+                            padding: const EdgeInsets.all(0.0)
+                          ),
+                          child: Ink(
+                            decoration:  BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Colors.purple, Colors.cyan]
+                              ),
+                              borderRadius: BorderRadius.circular(30)
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              constraints: BoxConstraints(minHeight: 80),
+                              child: Text(
+                                "Iniciar Sesión",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
